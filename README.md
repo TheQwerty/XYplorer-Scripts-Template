@@ -37,7 +37,7 @@ More detailed description.
 #### Notes
 + Developed in response to this [wish](example.com).
 + Discussion [thread](example.com) in XYplorer's Forums.
-+ Developed by @TheQwerty - [Contact Me](http://www.xyplorer.com/xyfc/memberlist.php?mode=viewprofile&u=438).
++ Developed by [TheQwerty](https://github.com/TheQwerty) - [Contact Me](http://www.xyplorer.com/xyfc/memberlist.php?mode=viewprofile&u=438).
 
 ----------
 
@@ -49,4 +49,4 @@ More detailed description.
 
 
 _This is an unofficial script file for [XYplorer](http://xyplorer.com/index.php) - a power file manager for Windows.
-It has been released by a group of individuals under the collective organization name @XYplorer-Scripts._
+It has been released by a group of individuals under the collective organization name [XYplorer-Scripts](https://github.com/XYplorer-Scripts)._
