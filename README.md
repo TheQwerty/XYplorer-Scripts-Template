@@ -37,7 +37,7 @@ More detailed description.
 #### Notes
 + Developed in response to this [wish](example.com).
 + Discussion [thread](example.com) in XYplorer's Forums.
-+ Developed by [TheQwerty](https://github.com/TheQwerty) - [Contact Me](http://www.xyplorer.com/xyfc/memberlist.php?mode=viewprofile&u=438).
++ Developed by [TheQwerty](https://github.com/TheQwerty) - [contact](http://www.xyplorer.com/xyfc/memberlist.php?mode=viewprofile&u=438) me.
 
 ----------
 
