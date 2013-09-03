@@ -1,0 +1,250 @@
+/*##############################################################################
+##  Script.xys
+##
+##  One sentence description.
+##
+##  More detailed description.
+##
+##
+##    Author: TheQwerty
+##   Version: 0.1
+##      Date: 2013-MM-DD THH:MMZ
+##  Requires: XY (Built against v<xyver>.)
+##############################################################################*/
+
+
+/*******************************************************************************
+** User Tweaks
+*******************************************************************************/
+"User Tweaks||4 : _getTweaks"
+  Global $GT_FORCE_INI_USE = false;
+  // Set to 'true' to force the script to use an INI file for settings.
+  // This causes it to bypass checking if permanent variables are retained.
+  // Default: false
+
+  Global $GT_INI_FILE = "<xyscripts>\.config\TheQwertysScripts.ini";
+  // Set to the path to the INI settings file.
+  // Used when G_FORCE_INI_USE is true or permanent variables are not retained.
+  // Default: "<xyscripts>\.config\TheQwertysScripts.ini"
+
+  Global $GT_INI_SECTION = 'SCRIPT';
+  // Set to the INI file section.
+  // This allows you to have multiple scripts share an INI file.
+  // Default: 'SCRIPT'
+
+  // Any additional tweaks. (GT = Global Tweak)
+/**************************************************************END _getTweaks */
+
+
+"- : _-" //---------------------------------------------------------------------
+
+
+/*******************************************************************************
+** Initialize
+*******************************************************************************/
+"_Initialize"
+  Global $G_INITIALIZED;
+  if (! $G_INITIALIZED) {
+    Status 'Initializing script...',, 'progress';
+    Sub '_readOptions';
+  }
+  $G_INITIALIZED = true;
+/*************************************************************END _Initialize */
+
+
+/*******************************************************************************
+** Get Configuration
+**   Reads settings from permanent variables or INI file depending on
+**   circumstances.
+*******************************************************************************/
+"Get Configuration||4 : _readOptions"
+  Status 'Reading configuration...',, 'progress';
+
+  // Retrieve internal script tweaks.
+  Sub('_getTweaks');
+  Global $GT_INI_FILE, $GT_FORCE_INI_USE, $GT_INI_SECTION;
+
+  // Globals to retrieve...
+  Global $GS_LAST_MODIFIED;
+  // Options
+  // Add declarations for each global option. (GS = Global Stored)
+  // Global $GS_OPTIONS;
+
+  // Skip permanent variable check if user is forcing INI use.
+  if ($GT_FORCE_INI_USE) {
+    $ScriptRetainPVs = false;
+  } else {
+    $ScriptRetainPVs = GetKey('ScriptRetainPVs', 'Settings');
+  }
+
+  // Use permanent variables if the user has XY retain them.
+  if ($ScriptRetainPVs && IsSet($P_THEQWERTY_MAIN_MENU_LAST_MODIFIED)) {
+    Status 'Read configuration from permanent variables.',, 'progress';
+    $GS_LAST_MODIFIED = $P_THEQWERTY_MAIN_MENU_LAST_MODIFIED;
+
+    // Options
+    // Retrieve the value from its permanent variable.
+    // $GS_OPTIONS = $P_THEQWERTY_SCRIPT_OPTIONS;
+
+  // Use an INI file.
+  } else {
+    if (1 == Exists($GT_INI_FILE)) {
+      $iniOptions = GetKey('XY_Version', $GT_INI_SECTION, $GT_INI_FILE);
+      if ($iniOptions) {
+        Status 'Read configuration from INI file.',, 'progress';
+        $GS_LAST_MODIFIED = GetKey('LAST_MODIFIED', $GT_INI_SECTION, $GT_INI_FILE);
+
+        // Options
+        // Retrieve the value from the INI file.
+        // $GS_OPTIONS = GetKey('Options', $GT_INI_SECTION, $GT_INI_FILE);
+
+        // Extra handling for INI files.
+        // Sometimes we need to un-escape line breaks or other characters.
+      }
+      Unset $iniOptions;
+    }
+  }
+  Unset $ScriptRetainPVs;
+/************************************************************END _readOptions */
+
+
+/*******************************************************************************
+** Set Configuration
+**   Writes settings to permanent variables or INI file depending on
+**   circumstances.
+*******************************************************************************/
+"Set Configuration||4 : _setOptions"
+  Status 'Saving configuration...',, 'progress';
+
+  // Retrieve internal script tweaks.
+  Sub('_getTweaks');
+  Global $GT_INI_FILE, $GT_FORCE_INI_USE, $GT_INI_SECTION;
+
+  // Globals to store...
+  Global $GS_LAST_MODIFIED = Now('yyyy-mm-dd_hh.nn.ss');
+  // Options
+  // Add declarations for each global option. (GS = Global Stored)
+  // Global $GS_OPTIONS;
+
+  // Skip permanent variable check if user is forcing INI use.
+  if ($GT_FORCE_INI_USE) {
+    $ScriptRetainPVs = false;
+  } else {
+    $ScriptRetainPVs = GetKey('ScriptRetainPVs', 'Settings');
+  }
+
+  // Use permanent variables if the user has XY retain them.
+  if ($ScriptRetainPVs) {
+    Perm $P_THEQWERTY_MAIN_MENU_LAST_MODIFIED = $GS_LAST_MODIFIED;
+
+    // Options
+    // Store the value in a permanent variable.
+    // Perm $P_THEQWERTY_SCRIPT_OPTIONS = $GS_OPTIONS;
+    Status 'Saved configuration to permanent variable.',, 'progress';
+
+  // Use an INI file.
+  } else {
+    if (1 != Exists($GT_INI_FILE)) {
+      Status 'Creating INI file...',, 'progress';
+      New($GT_INI_FILE, 'file');
+    }
+
+    // Extra handling for INI files.
+    // Sometimes we need to escape line breaks or other characters.
+
+    SetKey $GS_LAST_MODIFIED, 'LAST_MODIFIED', $GT_INI_SECTION, $GT_INI_FILE;
+
+    // Options
+    // Store the value in the INI file.
+    // SetKey $GS_OPTIONS, 'Options', $GT_INI_SECTION, $GT_INI_FILE;
+    Status 'Saved configuration to INI file.',, 'progress';
+
+    Unset $cmdList;
+  }
+  Unset $ScriptRetainPVs;
+/*************************************************************END _setOptions */
+
+
+"- : _-" //---------------------------------------------------------------------
+
+
+/*******************************************************************************
+** Helper Script
+**   Does some helper functions.
+**
+** OUTPUT VARIABLES:
+**   $G_OUTPUT  Description.
+*******************************************************************************/
+"Helper Script||4 : _helper"
+  // Do something for main.
+  // Probably something that requires storing data so you might call:
+  // Sub '_setOptions';
+/************************************************************END _helper */
+
+
+"- : _-" //---------------------------------------------------------------------
+
+
+/*******************************************************************************
+** Main Script
+**   Description.
+*******************************************************************************/
+"Main Script||1 : main"
+  $ME = Self('Caption');
+
+  // Ensure _Initialize was executed.
+  Sub '_Initialize';
+
+  // Do something interesting.
+/****************************************************************END showMenu */
+
+
+"- : _-" //---------------------------------------------------------------------
+
+
+/*******************************************************************************
+** Create Script to Call Script
+**   Generates and displays a script that calls this script's main entry point.
+*******************************************************************************/
+"Create Script to Call Script : _createCallerScript"
+  Status 'Generating calling script...',, 'progress';
+  $scriptFile = Self('File');
+  End ! $scriptFile, 'This requires the main script be saved to a file.';
+
+  Status 'Displaying calling script.',, 'ready';
+  Text <<<#SCRIPT
+Load '$scriptFile', 'main', 'f';
+#SCRIPT, /*width*/, /*height*/, 'Script to Show Menu';
+
+  Unset $scriptFile;
+/*****************************************************END _createCallerScript */
+
+
+/*******************************************************************************
+** Create Custom Toolbar Button
+**   Creates a custom toolbar button for calling this script.
+*******************************************************************************/
+"Create Custom Toolbar Button : _createCTB"
+  Status 'Generating custom toolbar button...',, 'progress';
+  $scriptFile = Self('File');
+  End ! $scriptFile, 'This requires the main script be saved to a file.';
+
+  $unresolvedIconPath = '<xypath>\<xyexe>';
+  Snippet <<<#SNIPPET
+Snip: CTB 1
+  XYplorer <xyver>, <date>
+Action
+  NewUserButton
+Name
+  Main Script
+Icon
+  $unresolvedIconPath
+ScriptL
+  Load '$scriptFile', 'main', 'f';
+ScriptR
+FireClick
+  1
+#SNIPPET;
+  Status 'Custom Toolbar Button created.',, 'ready';
+  Unset $scriptFile, $unresolvedIconPath;
+/**************************************************************END _createCTB */
