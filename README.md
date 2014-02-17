@@ -42,7 +42,7 @@ More detailed description.
 ----------
 
 #### Release Notes
-+ v 1.0 - Month dd, 2013
++ v 1.0 - Month dd, 2014
     - Initial Release
 
 ----------
